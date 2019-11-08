@@ -2,8 +2,8 @@ import slack
 import os
 
 # Set token on an Environment variable
-# slack_token = os.environ["SLACK_API_TOKEN"]
-client = slack.WebClient(token='xoxp-2413699446-474014365829-735646507764-cf986486be9bd4526962abe004f836d8')
+slack_token = os.environ["SLACK_API_TOKEN"]
+client = slack.WebClient(token=slack_token)
 version = os.environ["RELEASE_VERSION"]
 channel = os.environ["SLACK_CHANNEL"]
 def slack_message(text):
