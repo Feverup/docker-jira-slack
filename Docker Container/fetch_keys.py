@@ -1,5 +1,5 @@
-from main import *
 import os
+from main import *
 import argparse, sys
 from slack_message_release import slack_message
 

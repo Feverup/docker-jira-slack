@@ -1,5 +1,6 @@
 from jira import JIRA
 import sys
+import os
 
 jira = JIRA('https://jira.atlassian.com')
 jira_api_key = os.environ["JIRA_API_KEY"]
