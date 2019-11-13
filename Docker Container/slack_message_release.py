@@ -1,11 +1,14 @@
 import slack
 import os
+import urllib.parse
 
-# Set token on an Environment variable
 slack_token = os.environ["SLACK_API_TOKEN"]
 client = slack.WebClient(token=slack_token)
 version = os.environ["RELEASE_VERSION"]
 channel = os.environ["SLACK_CHANNEL"]
+release_or_hotfix = os.environ["RELEASE_OR_HOTFIX"]
+release_notes = os.environ["RELEASE_NOTES"]
+url = os.getenv('CI_TRIGGER_JOB_URL', "https://jenkins.io")
 def slack_message(text):
 	response = client.chat_postMessage(
     channel=channel,
@@ -17,7 +20,7 @@ def slack_message(text):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "Release notes for version " + version
+				"text": release_or_hotfix.title() + " notes for version " + version
 			}
 		},
 		{
@@ -25,7 +28,7 @@ def slack_message(text):
 			"fields": [
 				{
 					"type": "mrkdwn",
-					"text": "*Type:*\nRelease/Hotfix"
+					"text": "*Type:*\n" + release_or_hotfix.title()
 				},
 				{
 					"type": "mrkdwn",
@@ -59,7 +62,8 @@ def slack_message(text):
 						"text": "Approve"
 					},
 					"style": "primary",
-					"value": "click_me_123"
+					# "url": "https://ci.feverup.com/view/iOS/job/Approve%20Release/buildWithParameters?token=" + ci_token + "&release_or_hotfix=" + release_or_hotfix + "&release_version=" + version + "&release_notes=\"" + urllib.parse.quote(text) + "\""
+					"url": url
 				},
 				{
 					"type": "button",
@@ -69,7 +73,7 @@ def slack_message(text):
 						"text": "Deny"
 					},
 					"style": "danger",
-					"url": "https://ci.feverup.com/view/iOS/job/iOS%20AppStore%20release/build?delay=0sec"
+					"value": "click_me_123"
 				}
 			]
 		},
