@@ -1,15 +1,12 @@
-import os
 from main import *
-import argparse, sys
+import argparse
 from slack_message_release import slack_message
 
 parser=argparse.ArgumentParser()
 
-parser.add_argument('version', help='Specify the current release version')
 parser.add_argument('issues_id', help='Specify the issues id')
 
 args=parser.parse_args()
-release_version = args.version
 issues_id = args.issues_id
 
 # Read diff log between latest master and the given branch

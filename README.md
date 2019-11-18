@@ -10,16 +10,18 @@ You can use a list of commands like the following to build and execute the scrip
 ```bash
 docker build -t release-notes "https://github.com/Feverup/docker-jira-slack.git#develop:Docker Container"
 docker run -dt --env-file ./env.list --name release-notes release-notes
-docker container exec release-notes sh send_release_notes.sh
+docker container exec release-notes sh send_release_notes.sh --create-version
 docker stop release-notes
 docker container rm release-notes
 ```
 
 Required environment variables:
 
-- **RELEASE_NOTES**: A list of jira issues id. E.g ("IOS-1288 IOS-1289")
+- **RELEASE_NOTES**: A list of jira issues id. E.g ("IOS-1288 IOS-1289").
 - **RELEASE_VERSION**: Version name.
 - **SLACK_CHANNEL**: Channel that messages will be sent to.
 - **SLACK_API_TOKEN**: Slack API Token
 - **JIRA_API_KEY**: JIRA API key
 - **JIRA_API_EMAIL**: JIRA API email
+- **JIRA_PROJECT_KEY**: JIRA Project identifier.
+- **CI_TRIGGER_JOB_URL**: URL that will be opened when clicking approve on the Slack release message. You can use a Jenkins job url here to run a job. It must be **escaped**.
