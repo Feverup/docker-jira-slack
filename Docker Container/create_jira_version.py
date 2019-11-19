@@ -22,7 +22,7 @@ except JIRAError as e:
 
 for key in issues_id.split():
 	issue = jira.issue(key)
-	# issue.update(fields={'fixVersions': [{ 'name' : '6.31.0' }]})
+	issue.update(fields={'fixVersions': [{ 'name' : release_version }]})
 	print("Fix version for " + issue.key + " updated to " + release_version)
 
 print(release_notes)
