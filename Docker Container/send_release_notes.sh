@@ -1,7 +1,7 @@
 #!/bin/sh
 
 createVersion() {
-	echo "$(python3 create_jira_version.py $RELEASE_VERSION \"${RELEASE_NOTES}\")"
+	echo "$(python3 create_jira_version.py $RELEASE_VERSION "${RELEASE_NOTES}")"
 }
 
 slackReleaseNotes() {
