@@ -1,6 +1,7 @@
 import slack
 import os
 import urllib.parse
+from datetime import date
 
 slack_token = os.environ["SLACK_API_TOKEN"]
 client = slack.WebClient(token=slack_token)
@@ -32,15 +33,7 @@ def slack_message(text):
 				},
 				{
 					"type": "mrkdwn",
-					"text": "*When:*\nSubmitted Aut 10"
-				},
-				{
-					"type": "mrkdwn",
-					"text": "*Last Update:*\nMar 10, 2015 (3 years, 5 months)"
-				},
-				{
-					"type": "mrkdwn",
-					"text": "*User:*\n@cantero"
+					"text": "*When:*\nSubmitted " + date.today().strftime("%B %d, %Y")
 				}
 			]
 		},
@@ -64,17 +57,17 @@ def slack_message(text):
 					"style": "primary",
 					# "url": "https://ci.feverup.com/view/iOS/job/Approve%20Release/buildWithParameters?token=" + ci_token + "&release_or_hotfix=" + release_or_hotfix + "&release_version=" + version + "&release_notes=\"" + urllib.parse.quote(text) + "\""
 					"url": url
-				},
-				{
-					"type": "button",
-					"text": {
-						"type": "plain_text",
-						"emoji": True,
-						"text": "Deny"
-					},
-					"style": "danger",
-					"value": "click_me_123"
 				}
+				# {
+				# 	"type": "button",
+				# 	"text": {
+				# 		"type": "plain_text",
+				# 		"emoji": True,
+				# 		"text": "Deny"
+				# 	},
+				# 	"style": "danger",
+				# 	"value": "click_me_123"
+				# }
 			]
 		},
 		{
