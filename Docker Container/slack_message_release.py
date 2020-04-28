@@ -13,9 +13,45 @@ url = os.getenv('CI_TRIGGER_JOB_URL', "https://jenkins.io")
 should_display_approve = os.getenv("DISPLAY_APPROVE_BUTTON", "false")
 should_display_approve = should_display_approve.lower() == "true"
 
-slack_buttons = []
-if should_display_approve:
-    slack_buttons = [
+
+def slack_message(text):
+    blocks=[
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": release_or_hotfix.title() + " notes for version " + version
+            }
+        },
+        {
+            "type": "section",
+            "fields": [
+                {
+                    "type": "mrkdwn",
+                    "text": "*Type:*\n" + release_or_hotfix.title()
+                },
+                {
+                    "type": "mrkdwn",
+                    "text": "*When:*\nSubmitted " + date.today().strftime("%B %d, %Y")
+                }
+            ]
+        },
+        {
+            "type": "section",
+            "text": {
+                    "type": "mrkdwn",
+                    "text": "*Notes:*\n```" + text + "```"
+            }
+        },
+        {
+            "type": "divider"
+        }
+    ]
+
+    if should_display_approve:
+        slack_buttons = {
+            "type": "actions",
+            "elements": [
                 {
                     "type": "button",
                     "text": {
@@ -38,53 +74,15 @@ if should_display_approve:
                 #     "value": "click_me_123"
                 # }
             ]
-else:
-    slack_buttons = []
+        }
+        blocks.append(slack_buttons)
 
-print(slack_buttons)
-
-def slack_message(text):
 	response = client.chat_postMessage(
     channel=channel,
     text=text,
     username="Jenkins",
     icon_url="https://jenkins.io/images/logos/general/general.png",
-	blocks=[
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": release_or_hotfix.title() + " notes for version " + version
-			}
-		},
-		{
-			"type": "section",
-			"fields": [
-				{
-					"type": "mrkdwn",
-					"text": "*Type:*\n" + release_or_hotfix.title()
-				},
-				{
-					"type": "mrkdwn",
-					"text": "*When:*\nSubmitted " + date.today().strftime("%B %d, %Y")
-				}
-			]
-		},
-		{
-			"type": "section",
-			"text": {
-					"type": "mrkdwn",
-					"text": "*Notes:*\n```" + text + "```"
-			}
-		},
-		{
-			"type": "actions",
-			"elements": slack_buttons
-		},
-		{
-			"type": "divider"
-		}
-	]
+	blocks=blocks
     )
 
 	assert response["ok"]
