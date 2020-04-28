@@ -73,7 +73,7 @@ def slack_message(text):
             ]
         }
         blocks.append(slack_buttons)
-        block.append({
+        blocks.append({
             "type": "divider"
         })
 
