@@ -10,6 +10,39 @@ channel = os.environ["SLACK_CHANNEL"]
 release_or_hotfix = os.environ["RELEASE_OR_HOTFIX"]
 release_notes = os.environ["RELEASE_NOTES"]
 url = os.getenv('CI_TRIGGER_JOB_URL', "https://jenkins.io")
+should_display_approve = os.getenv("DISPLAY_APPROVE_BUTTON", "false")
+should_display_approve = should_display_approve.lower() == "true"
+
+slack_buttons = []
+if should_display_approve:
+    slack_buttons = [
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "emoji": True,
+                        "text": "Approve"
+                    },
+                    "style": "primary",
+                    # "url": "https://ci.feverup.com/view/iOS/job/Approve%20Release/buildWithParameters?token=" + ci_token + "&release_or_hotfix=" + release_or_hotfix + "&release_version=" + version + "&release_notes=\"" + urllib.parse.quote(text) + "\""
+                    "url": "url"
+                }
+                # {
+                #     "type": "button",
+                #     "text": {
+                #         "type": "plain_text",
+                #         "emoji": True,
+                #         "text": "Deny"
+                #     },
+                #     "style": "danger",
+                #     "value": "click_me_123"
+                # }
+            ]
+else:
+    slack_buttons = []
+
+print(slack_buttons)
+
 def slack_message(text):
 	response = client.chat_postMessage(
     channel=channel,
@@ -46,34 +79,12 @@ def slack_message(text):
 		},
 		{
 			"type": "actions",
-			"elements": [
-				{
-					"type": "button",
-					"text": {
-						"type": "plain_text",
-						"emoji": True,
-						"text": "Approve"
-					},
-					"style": "primary",
-					# "url": "https://ci.feverup.com/view/iOS/job/Approve%20Release/buildWithParameters?token=" + ci_token + "&release_or_hotfix=" + release_or_hotfix + "&release_version=" + version + "&release_notes=\"" + urllib.parse.quote(text) + "\""
-					"url": url
-				}
-				# {
-				# 	"type": "button",
-				# 	"text": {
-				# 		"type": "plain_text",
-				# 		"emoji": True,
-				# 		"text": "Deny"
-				# 	},
-				# 	"style": "danger",
-				# 	"value": "click_me_123"
-				# }
-			]
+			"elements": slack_buttons
 		},
 		{
 			"type": "divider"
 		}
 	]
     )
-	
+
 	assert response["ok"]
