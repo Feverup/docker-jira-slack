@@ -77,12 +77,12 @@ def slack_message(text):
         }
         blocks.append(slack_buttons)
 
-        response = client.chat_postMessage(
-                                           channel=channel,
-                                           text=text,
-                                           username="Jenkins",
-                                           icon_url="https://jenkins.io/images/logos/general/general.png",
-                                           blocks=blocks
-                                           )
+    response = client.chat_postMessage(
+                                       channel=channel,
+                                       text=text,
+                                       username="Jenkins",
+                                       icon_url="https://jenkins.io/images/logos/general/general.png",
+                                       blocks=blocks
+                                       )
 
-        assert response["ok"]
+    assert response["ok"]
