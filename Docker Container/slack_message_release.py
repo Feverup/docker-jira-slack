@@ -42,9 +42,6 @@ def slack_message(text):
                     "type": "mrkdwn",
                     "text": "*Notes:*\n```" + text + "```"
             }
-        },
-        {
-            "type": "divider"
         }
     ]
 
@@ -61,7 +58,7 @@ def slack_message(text):
                     },
                     "style": "primary",
                     # "url": "https://ci.feverup.com/view/iOS/job/Approve%20Release/buildWithParameters?token=" + ci_token + "&release_or_hotfix=" + release_or_hotfix + "&release_version=" + version + "&release_notes=\"" + urllib.parse.quote(text) + "\""
-                    "url": "url"
+                    "url": url
                 }
                 # {
                 #     "type": "button",
@@ -76,6 +73,9 @@ def slack_message(text):
             ]
         }
         blocks.append(slack_buttons)
+        block.append({
+            "type": "divider"
+        })
 
     response = client.chat_postMessage(
                                        channel=channel,
